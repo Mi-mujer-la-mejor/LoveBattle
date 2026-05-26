@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Love Battle 💕</title>
+
+  <!-- ═══════════════════════════════════════
+       Google Fonts: Cormorant Garamond (display)
+       + Raleway (body)
+  ════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Raleway:wght@300;400;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       CANVAS DE PARTÍCULAS (corazones flotantes)
+  ═══════════════════════════════════════ -->
+  <canvas id="particles"></canvas>
+
+  <!-- ══════════════════════════════════════
+       CABECERA
+  ═══════════════════════════════════════ -->
+  <header>
+    <p class="subtitle">✦ el juego del amor ✦</p>
+    <h1>Love Battle</h1>
+    <div class="header-divider"></div>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       ESTADO DE CONEXIÓN CON FIREBASE
+  ═══════════════════════════════════════ -->
+  <div id="status-bar">
+    <span id="status-dot"></span>
+    <span id="status-text">Conectando…</span>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       TABLERO PRINCIPAL
+  ═══════════════════════════════════════ -->
+  <main class="board">
+
+    <!-- ── Jugador Samuel ── -->
+    <section class="player" id="player-samuel">
+      <h2 class="player-name">Samuel</h2>
+
+      <!-- Botón corazón -->
+      <button
+        class="heart-btn"
+        id="btn-samuel"
+        aria-label="Sumar corazón a Samuel"
+      >
+        <!-- SVG corazón con gradiente -->
+        <svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="grad-samuel" cx="50%" cy="40%" r="60%">
+              <stop offset="0%"   stop-color="#ff6b8a" />
+              <stop offset="100%" stop-color="#c0003a" />
+            </radialGradient>
+          </defs>
+          <path
+            d="M50 85 C50 85 5 55 5 28
+               C5 13 16 3 28 3
+               C36 3 44 8 50 16
+               C56 8 64 3 72 3
+               C84 3 95 13 95 28
+               C95 55 50 85 50 85Z"
+            fill="url(#grad-samuel)"
+          />
+        </svg>
+        <!-- Anillo de pulso -->
+        <span class="pulse-ring"></span>
+      </button>
+
+      <!-- Contador -->
+      <div class="score-wrap">
+        <span class="score-label">latidos</span>
+        <span class="score-number" id="score-samuel">0</span>
+      </div>
+    </section>
+
+    <!-- ── Separador central ── -->
+    <div class="vs-divider">
+      <span class="vs-heart">💗</span>
+      <span class="vs-text">VS</span>
+      <span class="vs-heart">💗</span>
+    </div>
+
+    <!-- ── Jugador Melannie ── -->
+    <section class="player" id="player-melannie">
+      <h2 class="player-name">Melannie</h2>
+
+      <button
+        class="heart-btn"
+        id="btn-melannie"
+        aria-label="Sumar corazón a Melannie"
+      >
+        <svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="grad-melannie" cx="50%" cy="40%" r="60%">
+              <stop offset="0%"   stop-color="#ffb3c6" />
+              <stop offset="100%" stop-color="#e0006b" />
+            </radialGradient>
+          </defs>
+          <path
+            d="M50 85 C50 85 5 55 5 28
+               C5 13 16 3 28 3
+               C36 3 44 8 50 16
+               C56 8 64 3 72 3
+               C84 3 95 13 95 28
+               C95 55 50 85 50 85Z"
+            fill="url(#grad-melannie)"
+          />
+        </svg>
+        <span class="pulse-ring"></span>
+      </button>
+
+      <div class="score-wrap">
+        <span class="score-label">latidos</span>
+        <span class="score-number" id="score-melannie">0</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════
+       BARRA DE PROGRESO (quién va ganando)
+  ═══════════════════════════════════════ -->
+  <div class="progress-container">
+    <span class="progress-name left">Samuel</span>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <span class="progress-name right">Melannie</span>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PIE DE PÁGINA
+  ═══════════════════════════════════════ -->
+  <footer>
+    <p>Hecho con ❤️ · toca tu corazón para ganar</p>
+  </footer>
+
+  <!-- ══════════════════════════════════════
+       FIREBASE SDK (modular, versión 10)
+  ═══════════════════════════════════════ -->
+  <script type="module" src="script.js"></script>
+
+</body>
+</html>

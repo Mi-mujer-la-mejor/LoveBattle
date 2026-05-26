@@ -1,0 +1,457 @@
+/* ═══════════════════════════════════════════════════
+   LOVE BATTLE — style.css
+   Paleta: negro profundo · rojo pasión · rosa suave
+   Fuentes: Cormorant Garamond (títulos) · Raleway (cuerpo)
+═══════════════════════════════════════════════════ */
+
+/* ──────────────────────────────────────
+   VARIABLES GLOBALES
+────────────────────────────────────── */
+:root {
+  --bg-deep:       #0a0007;
+  --bg-mid:        #120010;
+  --bg-card:       rgba(255, 255, 255, 0.03);
+
+  --red-hot:       #c0003a;
+  --red-bright:    #ff2d5e;
+  --pink-soft:     #ff7fa8;
+  --pink-pale:     #ffd6e4;
+  --gold-accent:   #b8860b;
+
+  --text-main:     #f5d8e2;
+  --text-muted:    rgba(245, 216, 226, 0.5);
+
+  --glow-red:      0 0 30px rgba(192, 0, 58, 0.6),
+                   0 0 60px rgba(192, 0, 58, 0.3);
+  --glow-pink:     0 0 30px rgba(255, 127, 168, 0.6),
+                   0 0 60px rgba(255, 127, 168, 0.3);
+
+  --transition:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth:   cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ──────────────────────────────────────
+   RESET & BASE
+────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    #2a0018 0%,
+    #120010 40%,
+    #0a0007 100%
+  );
+  color: var(--text-main);
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Textura de grano sutil sobre el fondo */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* ──────────────────────────────────────
+   CANVAS DE PARTÍCULAS (corazones flotantes)
+────────────────────────────────────── */
+#particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ──────────────────────────────────────
+   CABECERA
+────────────────────────────────────── */
+header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2.8rem 1rem 0.6rem;
+  animation: fadeDown 0.9s var(--ease-smooth) both;
+}
+
+.subtitle {
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--pink-soft);
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
+}
+
+h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 12vw, 6rem);
+  font-weight: 300;
+  line-height: 1;
+  background: linear-gradient(135deg, #ff8fab 0%, #ff2d5e 45%, #c0003a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 18px rgba(255, 45, 94, 0.5));
+  letter-spacing: 0.04em;
+}
+
+.header-divider {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--red-bright), transparent);
+  margin: 1rem auto 0;
+}
+
+/* ──────────────────────────────────────
+   BARRA DE ESTADO (Firebase)
+────────────────────────────────────── */
+#status-bar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.2rem 0 0;
+  padding: 0.35rem 1rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 100px;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: all 0.4s var(--ease-smooth);
+}
+
+#status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #555;
+  transition: background 0.4s;
+  flex-shrink: 0;
+}
+
+/* Estados de conexión */
+#status-bar.connected #status-dot {
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  animation: blink 2s infinite;
+}
+#status-bar.error #status-dot {
+  background: var(--red-bright);
+  box-shadow: 0 0 8px var(--red-bright);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ──────────────────────────────────────
+   TABLERO PRINCIPAL
+────────────────────────────────────── */
+.board {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 6vw, 5rem);
+  padding: 2.5rem 1.5rem 1rem;
+  width: 100%;
+  max-width: 720px;
+  flex-wrap: wrap;
+}
+
+/* ──────────────────────────────────────
+   TARJETA DE JUGADOR
+────────────────────────────────────── */
+.player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  animation: fadeUp 0.8s var(--ease-smooth) both;
+}
+
+#player-samuel  { animation-delay: 0.15s; }
+#player-melannie { animation-delay: 0.3s; }
+
+.player-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: var(--text-main);
+  text-transform: uppercase;
+}
+
+/* ──────────────────────────────────────
+   BOTÓN CORAZÓN
+────────────────────────────────────── */
+.heart-btn {
+  position: relative;
+  width: clamp(120px, 32vw, 180px);
+  height: clamp(120px, 32vw, 180px);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.heart-btn svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 24px rgba(192, 0, 58, 0.5));
+  transition: transform 0.15s var(--transition),
+              filter 0.15s var(--ease-smooth);
+}
+
+/* Corazón de Melannie: tono más rosado */
+#btn-melannie svg {
+  filter: drop-shadow(0 4px 24px rgba(224, 0, 107, 0.5));
+}
+
+/* Hover en desktop */
+@media (hover: hover) {
+  .heart-btn:hover svg {
+    transform: scale(1.07);
+    filter: drop-shadow(0 6px 32px rgba(255, 45, 94, 0.75));
+  }
+}
+
+/* ── Animación POP al hacer clic ── */
+.heart-btn.pop svg {
+  animation: heartPop 0.45s var(--transition) forwards;
+}
+
+@keyframes heartPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.28); }
+  65%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* ── Anillo de pulso ── */
+.pulse-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--red-bright);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.heart-btn.pop .pulse-ring {
+  animation: pulseRing 0.6s var(--ease-smooth) forwards;
+}
+
+@keyframes pulseRing {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ──────────────────────────────────────
+   CONTADOR
+────────────────────────────────────── */
+.score-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.score-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.score-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 9vw, 5rem);
+  font-weight: 600;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--pink-pale) 0%, var(--red-bright) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: transform 0.25s var(--transition);
+}
+
+/* Animación de número al incrementar */
+.score-number.bump {
+  animation: scoreBump 0.35s var(--transition);
+}
+
+@keyframes scoreBump {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* ──────────────────────────────────────
+   SEPARADOR VS CENTRAL
+────────────────────────────────────── */
+.vs-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  animation: fadeUp 0.8s var(--ease-smooth) 0.22s both;
+}
+
+.vs-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--red-bright);
+  text-shadow: 0 0 20px rgba(255, 45, 94, 0.6);
+}
+
+.vs-heart {
+  font-size: 1.2rem;
+  animation: heartbeat 1.4s ease-in-out infinite;
+}
+.vs-heart:last-child { animation-delay: 0.7s; }
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%       { transform: scale(1.2); }
+  28%       { transform: scale(1); }
+  42%       { transform: scale(1.15); }
+}
+
+/* En pantallas pequeñas, el VS se oculta o se pone horizontal */
+@media (max-width: 440px) {
+  .board {
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 1.5rem;
+  }
+  .vs-divider {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
+/* ──────────────────────────────────────
+   BARRA DE PROGRESO
+────────────────────────────────────── */
+.progress-container {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 600px;
+  padding: 0 1.5rem;
+  margin-top: 0.5rem;
+  animation: fadeUp 0.8s var(--ease-smooth) 0.4s both;
+}
+
+.progress-name {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 52px;
+}
+.progress-name.right { text-align: right; }
+
+.progress-track {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+/* fill empieza al 50% (empate) */
+.progress-fill {
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(90deg, var(--red-hot), var(--pink-soft));
+  border-radius: 100px;
+  transition: width 0.5s var(--ease-smooth);
+  transform-origin: left;
+}
+
+/* ──────────────────────────────────────
+   PIE DE PÁGINA
+────────────────────────────────────── */
+footer {
+  position: relative;
+  z-index: 10;
+  margin-top: auto;
+  padding: 2rem 1rem 1.5rem;
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  animation: fadeUp 0.8s var(--ease-smooth) 0.5s both;
+}
+
+/* ──────────────────────────────────────
+   PARTÍCULA FLOTANTE (mini-corazón)
+   — creada dinámicamente por JS —
+────────────────────────────────────── */
+.floaty-heart {
+  position: fixed;
+  pointer-events: none;
+  z-index: 5;
+  font-size: 1rem;
+  opacity: 0;
+  animation: floatUp 2.2s var(--ease-smooth) forwards;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0)   scale(0.4) rotate(-15deg); opacity: 0; }
+  15%  { opacity: 0.9; }
+  80%  { opacity: 0.5; }
+  100% { transform: translateY(-220px) scale(1.1) rotate(15deg); opacity: 0; }
+}
+
+/* ──────────────────────────────────────
+   ANIMACIONES GLOBALES
+────────────────────────────────────── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
