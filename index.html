@@ -4,60 +4,69 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Love Battle 💕</title>
-
-  <!-- ═══════════════════════════════════════
-       Google Fonts: Cormorant Garamond (display)
-       + Raleway (body)
-  ════════════════════════════════════════ -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Raleway:wght@300;400;600&display=swap"
     rel="stylesheet"
   />
-
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════
-       CANVAS DE PARTÍCULAS (corazones flotantes)
-  ═══════════════════════════════════════ -->
+  <!-- CANVAS partículas fondo -->
   <canvas id="particles"></canvas>
 
-  <!-- ══════════════════════════════════════
+  <!-- ══════════════════════════════
        CABECERA
-  ═══════════════════════════════════════ -->
+  ═══════════════════════════════ -->
   <header>
     <p class="subtitle">✦ Nuestro Jueguito ✦</p>
     <h1>Love Battle</h1>
     <div class="header-divider"></div>
   </header>
 
-  <!-- ══════════════════════════════════════
-       ESTADO DE CONEXIÓN CON FIREBASE
-  ═══════════════════════════════════════ -->
+  <!-- ══════════════════════════════
+       ESTADO FIREBASE
+  ═══════════════════════════════ -->
   <div id="status-bar">
     <span id="status-dot"></span>
     <span id="status-text">Enamorando…</span>
   </div>
 
-  <!-- ══════════════════════════════════════
+  <!-- ══════════════════════════════
+       CONTADOR REGRESIVO
+  ═══════════════════════════════ -->
+  <div class="countdown-wrap">
+    <p class="countdown-label">⏳ reinicio en</p>
+    <div class="countdown-clock">
+      <div class="clock-block">
+        <span id="cd-hours">00</span>
+        <span class="clock-unit">h</span>
+      </div>
+      <span class="clock-sep">:</span>
+      <div class="clock-block">
+        <span id="cd-minutes">00</span>
+        <span class="clock-unit">m</span>
+      </div>
+      <span class="clock-sep">:</span>
+      <div class="clock-block">
+        <span id="cd-seconds">00</span>
+        <span class="clock-unit">s</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
        TABLERO PRINCIPAL
-  ═══════════════════════════════════════ -->
+  ═══════════════════════════════ -->
   <main class="board">
 
-    <!-- ── Jugador Samuel ── -->
+    <!-- ── Samuel ── -->
     <section class="player" id="player-samuel">
       <h2 class="player-name">Samuel</h2>
 
-      <!-- Botón corazón -->
-      <button
-        class="heart-btn"
-        id="btn-samuel"
-        aria-label="Sumar corazón a Samuel"
-      >
-        <!-- SVG corazón con gradiente -->
+      <button class="heart-btn" id="btn-samuel" aria-label="Sumar corazón a Samuel">
         <svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="grad-samuel" cx="50%" cy="40%" r="60%">
@@ -75,33 +84,33 @@
             fill="url(#grad-samuel)"
           />
         </svg>
-        <!-- Anillo de pulso -->
         <span class="pulse-ring"></span>
       </button>
 
-      <!-- Contador -->
       <div class="score-wrap">
         <span class="score-label">Te amos</span>
         <span class="score-number" id="score-samuel">0</span>
       </div>
+
+      <!-- Victorias -->
+      <div class="wins-wrap">
+        <span class="wins-label">🏆 victorias</span>
+        <span class="wins-number" id="wins-samuel">0</span>
+      </div>
     </section>
 
-    <!-- ── Separador central ── -->
+    <!-- ── VS ── -->
     <div class="vs-divider">
       <span class="vs-heart">💗</span>
       <span class="vs-text">VS</span>
       <span class="vs-heart">💗</span>
     </div>
 
-    <!-- ── Jugador Melannie ── -->
+    <!-- ── Melannie ── -->
     <section class="player" id="player-melannie">
       <h2 class="player-name">Melannie</h2>
 
-      <button
-        class="heart-btn"
-        id="btn-melannie"
-        aria-label="Sumar corazón a Melannie"
-      >
+      <button class="heart-btn" id="btn-melannie" aria-label="Sumar corazón a Melannie">
         <svg viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="grad-melannie" cx="50%" cy="40%" r="60%">
@@ -126,13 +135,19 @@
         <span class="score-label">Te amos</span>
         <span class="score-number" id="score-melannie">0</span>
       </div>
+
+      <!-- Victorias -->
+      <div class="wins-wrap">
+        <span class="wins-label">🏆 victorias</span>
+        <span class="wins-number" id="wins-melannie">0</span>
+      </div>
     </section>
 
   </main>
 
-  <!-- ══════════════════════════════════════
-       BARRA DE PROGRESO (quién va ganando)
-  ═══════════════════════════════════════ -->
+  <!-- ══════════════════════════════
+       BARRA DE PROGRESO
+  ═══════════════════════════════ -->
   <div class="progress-container">
     <span class="progress-name left">Samuel</span>
     <div class="progress-track">
@@ -141,16 +156,50 @@
     <span class="progress-name right">Melannie</span>
   </div>
 
-  <!-- ══════════════════════════════════════
+  <!-- ══════════════════════════════
+       MENSAJE ROMÁNTICO DEL DÍA
+  ═══════════════════════════════ -->
+  <div class="winner-msg" id="winner-msg" hidden>
+    <span class="winner-crown">👑</span>
+    <p id="winner-text"></p>
+  </div>
+
+  <!-- ══════════════════════════════
+       RACHA
+  ═══════════════════════════════ -->
+  <div class="streak-wrap" id="streak-wrap">
+    <p class="streak-text" id="streak-text"></p>
+  </div>
+
+  <!-- ══════════════════════════════
+       HISTORIAL
+  ═══════════════════════════════ -->
+  <section class="history-section">
+    <h3 class="history-title">📜 Récord histórico</h3>
+    <div class="history-list" id="history-list">
+      <p class="history-empty">Aún no hay batallas registradas.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       MODAL CELEBRACIÓN
+  ═══════════════════════════════ -->
+  <div class="modal-overlay" id="modal-overlay" hidden>
+    <div class="modal-box">
+      <div class="modal-crown">👑</div>
+      <h2 class="modal-title" id="modal-title"></h2>
+      <p class="modal-sub" id="modal-sub"></p>
+      <button class="modal-close" id="modal-close">¡Genial! </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
        PIE DE PÁGINA
-  ═══════════════════════════════════════ -->
+  ═══════════════════════════════ -->
   <footer>
     <p>Aqui se demuestra quien ama mas al otro</p>
   </footer>
 
-  <!-- ══════════════════════════════════════
-       FIREBASE SDK (modular, versión 10)
-  ═══════════════════════════════════════ -->
   <script type="module" src="script.js"></script>
 
 </body>
