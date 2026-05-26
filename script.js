@@ -333,7 +333,10 @@ async function checkDailyReset() {
 //  CONTADOR REGRESIVO
 // ═══════════════════════════════════════════════════════════
 
+let resetting = false;
+
 function startCountdown() {
+
   async function tick() {
 
     const ms = msUntilMidnight();
@@ -346,10 +349,22 @@ function startCountdown() {
     cdMinutes.textContent = String(min).padStart(2, "0");
     cdSeconds.textContent = String(sec).padStart(2, "0");
 
-    // SOLO cuando llegue medianoche
-    if (ms <= 1000) {
-      await checkDailyReset();
-      await loadHistory();
+    // SOLO UNA VEZ cuando llegue medianoche
+    if (ms <= 1000 && !resetting) {
+
+      resetting = true;
+
+      try {
+        await checkDailyReset();
+        await loadHistory();
+      } catch (err) {
+        console.error(err);
+      }
+
+      // evita múltiples resets
+      setTimeout(() => {
+        resetting = false;
+      }, 5000);
     }
   }
 
@@ -527,12 +542,33 @@ btnMelannie.addEventListener("touchstart",(e)=> handleClick("melannie", btnMelan
 //  ARRANQUE
 // ═══════════════════════════════════════════════════════════
 (async function main() {
-  setStatus("", "Conectando…");
-  await initScores();
-  await checkDailyReset();   // ← verifica si hay que reiniciar
-  subscribeScores();          // ← escucha cambios en tiempo real
-  subscribeMeta();            // ← escucha victorias/racha en tiempo real
-  await loadHistory();        // ← carga el historial
-  startCountdown();           // ← arranca el contador regresivo
+  try {
+    setStatus("", "Conectando…");
+
+    // Inicializar solo una vez
+    await initScores();
+
+    // Esperar un poco para evitar spam a Firestore
+    setTimeout(async () => {
+
+      // Verificar reinicio diario
+      await checkDailyReset();
+
+      // Escuchar cambios en tiempo real
+      subscribeScores();
+      subscribeMeta();
+
+      // Cargar historial
+      await loadHistory();
+
+      // Iniciar contador
+      startCountdown();
+
+    }, 1500);
+
+  } catch (err) {
+    console.error("Error arrancando app:", err);
+    setStatus("error", "Error de conexión");
+  }
 })();
  
