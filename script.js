@@ -354,7 +354,7 @@ function startCountdown() {
   }
 
   tick();
-  setInterval(tick, 1000);
+  setInterval(checkDailyReset, 60000);
 }
 
 // ═══════════════════════════════════════════════════════════
