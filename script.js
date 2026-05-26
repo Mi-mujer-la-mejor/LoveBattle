@@ -159,7 +159,7 @@ async function initScores() {
   winsSamuel: 0,
   winsMelannie: 0,
   weekEnd: Date.now() + (7 * 24 * 60 * 60 * 1000)
-});
+});}
   } catch (err) {
     console.error("Error inicializando puntajes:", err);
     setStatus("error", "Error al conectar con Firebase");
