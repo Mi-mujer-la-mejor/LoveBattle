@@ -153,9 +153,13 @@ async function initScores() {
     const snap = await getDoc(scoresRef);
     if (!snap.exists()) {
       // Primera vez: crear documento con valores en 0
-      await setDoc(scoresRef, { samuel: 0, melannie: 0 });
-      console.log("📄 Documento de puntajes creado en Firestore.");
-    }
+      await setDoc(scoresRef, {
+  samuel: 0,
+  melannie: 0,
+  winsSamuel: 0,
+  winsMelannie: 0,
+  weekEnd: Date.now() + (7 * 24 * 60 * 60 * 1000)
+});
   } catch (err) {
     console.error("Error inicializando puntajes:", err);
     setStatus("error", "Error al conectar con Firebase");
