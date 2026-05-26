@@ -25,12 +25,12 @@ import {
 //  Firebase Console → tu proyecto → ⚙️ Configuración
 // ─────────────────────────────────────────────────────────
 const firebaseConfig = {
-  apiKey:            "TU_API_KEY",
-  authDomain:        "TU_AUTH_DOMAIN",
-  projectId:         "TU_PROJECT_ID",
-  storageBucket:     "TU_STORAGE_BUCKET",
-  messagingSenderId: "TU_MESSAGING_SENDER_ID",
-  appId:             "TU_APP_ID"
+  apiKey: "AIzaSyCF7dCol5qhqZGcQzrmGH4bGdv2bC15fTk",
+  authDomain: "lovebattle-a0698.firebaseapp.com",
+  projectId: "lovebattle-a0698",
+  storageBucket: "lovebattle-a0698.firebasestorage.app",
+  messagingSenderId: "713820448564",
+  appId: "1:713820448564:web:7f5b56203f7efe5ec8e761"
 };
 // ─────────────────────────────────────────────────────────
 
