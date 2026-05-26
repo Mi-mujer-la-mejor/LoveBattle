@@ -334,27 +334,29 @@ async function checkDailyReset() {
 // ═══════════════════════════════════════════════════════════
 
 function startCountdown() {
-  function tick() {
-    const ms   = msUntilMidnight();
-    const h    = Math.floor(ms / 3_600_000);
-    const min  = Math.floor((ms % 3_600_000) / 60_000);
-    const sec  = Math.floor((ms % 60_000) / 1_000);
+  async function tick() {
+
+    const ms = msUntilMidnight();
+
+    const h   = Math.floor(ms / 3_600_000);
+    const min = Math.floor((ms % 3_600_000) / 60_000);
+    const sec = Math.floor((ms % 60_000) / 1000);
 
     cdHours.textContent   = String(h).padStart(2, "0");
     cdMinutes.textContent = String(min).padStart(2, "0");
     cdSeconds.textContent = String(sec).padStart(2, "0");
 
-    // Si llega a 0, forzar reinicio
+    // SOLO cuando llegue medianoche
     if (ms <= 1000) {
-      setTimeout(async () => {
-        await checkDailyReset();
-        await loadHistory();
-      }, 1200);
+      await checkDailyReset();
+      await loadHistory();
     }
   }
 
   tick();
-  setInterval(checkDailyReset, 60000);
+
+  // solo actualiza reloj visual
+  setInterval(tick, 1000);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -447,7 +449,16 @@ function spawnFloatyHearts(event) {
 // ═══════════════════════════════════════════════════════════
 
 function handleClick(player, btn, event) {
+
+  if (window.isAddingPoint) return;
+  window.isAddingPoint = true;
+
+  setTimeout(() => {
+    window.isAddingPoint = false;
+  }, 250);
+
   event.preventDefault();
+
   popHeart(btn);
   spawnFloatyHearts(event);
   addPoint(player);
