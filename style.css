@@ -251,7 +251,7 @@ h1 {
 }
 
 .heart-btn.pop svg {
-  animation: heartPop 0.45s var(--transition) forwards;
+  animation: heartPop 0.12s var(--transition) forwards;
 }
 
 @keyframes heartPop {
