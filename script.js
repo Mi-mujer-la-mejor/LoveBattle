@@ -424,13 +424,54 @@ function subscribeMeta() {
 // ═══════════════════════════════════════════════════════════
 //  FIRESTORE: sumar punto
 // ═══════════════════════════════════════════════════════════
-async function addPoint(player) {
-  try {
-    await updateDoc(scoresRef, { [player]: increment(1) });
-  } catch (err) {
-    console.error(`Error sumando punto a ${player}:`, err);
-  }
+const clickBuffer = {
+  samuel: 0,
+  melannie: 0
+};
+
+let sending = false;
+
+// acumula clicks
+function addPoint(player) {
+  clickBuffer[player]++;
 }
+
+// envía clicks acumulados cada 500ms
+setInterval(async () => {
+
+  if (sending) return;
+
+  const samuelClicks    = clickBuffer.samuel;
+  const melannieClicks  = clickBuffer.melannie;
+
+  if (samuelClicks === 0 && melannieClicks === 0) return;
+
+  sending = true;
+
+  try {
+
+    const updates = {};
+
+    if (samuelClicks > 0) {
+      updates.samuel = increment(samuelClicks);
+    }
+
+    if (melannieClicks > 0) {
+      updates.melannie = increment(melannieClicks);
+    }
+
+    await updateDoc(scoresRef, updates);
+
+    clickBuffer.samuel = 0;
+    clickBuffer.melannie = 0;
+
+  } catch (err) {
+    console.error("Error enviando clicks:", err);
+  }
+
+  sending = false;
+
+}, 500);
 
 // ═══════════════════════════════════════════════════════════
 //  EFECTOS VISUALES
