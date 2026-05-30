@@ -434,6 +434,8 @@ let sending = false;
 // acumula clicks
 function addPoint(player) {
   clickBuffer[player]++;
+  scores[player]++;
+  updateScoreUI(player, scores[player]);
 }
 
 // envía clicks acumulados cada 500ms
