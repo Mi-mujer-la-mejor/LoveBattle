@@ -506,13 +506,6 @@ function spawnFloatyHearts(event) {
 
 function handleClick(player, btn, event) {
 
-  if (window.isAddingPoint) return;
-  window.isAddingPoint = true;
-
-  setTimeout(() => {
-    window.isAddingPoint = false;
-  }, 250);
-
   event.preventDefault();
 
   popHeart(btn);
