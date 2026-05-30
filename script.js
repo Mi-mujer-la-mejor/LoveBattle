@@ -433,9 +433,12 @@ let sending = false;
 
 // acumula clicks
 function addPoint(player) {
-  clickBuffer[player]++;
+   // contador visual instantáneo
   scores[player]++;
   updateScoreUI(player, scores[player]);
+
+  // acumular para Firebase
+  clickBuffer[player]++;
 }
 
 // envía clicks acumulados cada 500ms
@@ -443,7 +446,10 @@ setInterval(async () => {
 
   if (sending) return;
 
-  if (clickBuffer.samuel === 0 && clickBuffer.melannie === 0) return;
+ if (
+  clickBuffer.samuel < 20 &&
+  clickBuffer.melannie < 20
+) return;
 
   sending = true;
 
