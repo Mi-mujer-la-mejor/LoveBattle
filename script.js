@@ -400,7 +400,7 @@ function subscribeScores() {
         const data = snap.data();
         updateScoreUI("samuel",   data.samuel   ?? 0);
         updateScoreUI("melannie", data.melannie ?? 0);
-        setStatus("connected", "En vivo ✦");
+        setStatus("connected", "Enamorados :)");
       }
     },
     (err) => {
@@ -607,7 +607,7 @@ btnMelannie.addEventListener("touchstart",(e)=> handleClick("melannie", btnMelan
 // ═══════════════════════════════════════════════════════════
 (async function main() {
   try {
-    setStatus("", "Conectando…");
+    setStatus("", "Enamorando…");
 
     // Inicializar solo una vez
     await initScores();
