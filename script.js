@@ -544,6 +544,8 @@ btnMelannie.addEventListener("touchstart",(e)=> handleClick("melannie", btnMelan
     ctx.closePath(); ctx.fill(); ctx.restore();
   }
 
+  spawnFloatyHearts(event);
+
   for (let i = 0; i < COUNT; i++) {
     hearts.push({
       x: Math.random() * window.innerWidth,
