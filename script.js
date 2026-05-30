@@ -441,12 +441,16 @@ setInterval(async () => {
 
   if (sending) return;
 
-  const samuelClicks    = clickBuffer.samuel;
-  const melannieClicks  = clickBuffer.melannie;
-
-  if (samuelClicks === 0 && melannieClicks === 0) return;
+  if (clickBuffer.samuel === 0 && clickBuffer.melannie === 0) return;
 
   sending = true;
+
+  // COPIAR Y VACIAR ANTES DE ENVIAR
+  const samuelClicks = clickBuffer.samuel;
+  const melannieClicks = clickBuffer.melannie;
+
+  clickBuffer.samuel = 0;
+  clickBuffer.melannie = 0;
 
   try {
 
@@ -462,10 +466,12 @@ setInterval(async () => {
 
     await updateDoc(scoresRef, updates);
 
-    clickBuffer.samuel = 0;
-    clickBuffer.melannie = 0;
-
   } catch (err) {
+
+    // si falla, devolver los clicks al buffer
+    clickBuffer.samuel += samuelClicks;
+    clickBuffer.melannie += melannieClicks;
+
     console.error("Error enviando clicks:", err);
   }
 
