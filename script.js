@@ -424,6 +424,8 @@ function subscribeMeta() {
 // ═══════════════════════════════════════════════════════════
 //  FIRESTORE: sumar punto
 // ═══════════════════════════════════════════════════════════
+let lastClickTime = Date.now();
+
 const clickBuffer = {
   samuel: 0,
   melannie: 0
@@ -439,6 +441,7 @@ function addPoint(player) {
 
   // acumular para Firebase
   clickBuffer[player]++;
+  lastClickTime = Date.now();
 }
 
 // envía clicks acumulados cada 500ms
@@ -446,10 +449,22 @@ setInterval(async () => {
 
   if (sending) return;
 
- if (
-  clickBuffer.samuel < 20 &&
-  clickBuffer.melannie < 20
-) return;
+ const totalBuffer =
+  clickBuffer.samuel +
+  clickBuffer.melannie;
+
+// enviar si hay 20 acumulados
+if (totalBuffer >= 20) {
+
+} else {
+
+  // si no hay 20, pero han pasado 10 segundos sin clicks
+  if (
+    Date.now() - lastClickTime < 10000
+  ) {
+    return;
+  }
+}
 
   sending = true;
 
