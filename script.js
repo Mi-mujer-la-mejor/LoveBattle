@@ -454,7 +454,7 @@ setInterval(async () => {
   clickBuffer.melannie;
 
 // enviar si hay 20 acumulados
-if (totalBuffer >= 20) {
+if (totalBuffer >= 100) {
 
 } else {
 
